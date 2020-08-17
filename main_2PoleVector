@@ -1,0 +1,26 @@
+#LinkDoubleArt
+import maya.cmds as pm
+sel = pm.ls(sl=True)
+
+footOld1 = sel[0]
+footNew1 = sel[1]
+
+name1 = jointStart2 #upper
+name_List1 = name1.split('_')
+
+footPlace1 = name_List1[0]+'_'+name_List1[1]+'_ToeBase_To_ToeEnd_Grp'
+footOld_Grp1 = name_List1[0]+'_'+name_List1[1]+'_Foot_Ctrl_Old_grp'
+footNew_Grp1 = name_List1[0]+'_'+name_List1[1]+'_Foot_Ctrl_grp'
+ikBlend= name_List1[0]+'_'+name_List1[1]+'_Upper_IK'
+footRig1= name_List1[0]+'_'+name_List1[1]+'_FootRig_Top_Grp'
+
+cmds.parent(footOld_Grp1, footPlace1)
+cmds.parent(footNew_Grp1,w=True)
+
+cmds.connectAttr(footOld1+'.ShoulderSystemRatio',ikBlend+'.blendPoint1', f=True)
+cmds.connectAttr(footNew1+'.ShoulderSystemRatio',footOld1+'.ShoulderSystemRatio', f=True)
+
+cmds.parentConstraint(footNew1,footRig1, mo=True) 
+cmds.scaleConstraint(footNew1,footRig1,mo=True) 
+
+cmds.setAttr(footOld1+'.visibility',0)
